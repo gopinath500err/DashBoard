@@ -1,0 +1,23 @@
+<div  cdkDrag cdkDragRootElement='.cdk-overlay-pane'>
+    <div class="row">
+      <div class="col-6">
+        <h4 cdkDragHandle class="font-weight-bold">
+          {{title}}
+        </h4>
+    </div>
+    <div class="col-1"></div>
+    <div class="col-2">
+      <mat-icon  size="2" (click)="closewindow()" class="text-blue"
+       style="cursor: pointer;padding-left: 118px;">close
+      </mat-icon>
+    </div>
+      
+    </div>
+    <div style="padding-top: 10px;" >
+        <p>{{message}}<strong>{{taskId}}</strong> task ?</p>
+      </div>
+      <div mat-dialog-actions style="padding-left: 170px;padding-top: 25px;">
+        <button mat-raised-button color="primary" (click)="onConfirm()">Yes</button>
+        <button mat-raised-button mat-dialog-close (click)="onDismiss()">No</button>
+      </div>
+</div>

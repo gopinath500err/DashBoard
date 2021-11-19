@@ -1,0 +1,17 @@
+﻿<!-- nav -->
+<nav class="navbar navbar-expand navbar-dark accel-bg-primary" style="font-size: 18px;" *ngIf="user">
+    <div class="navbar-nav">
+        <a class="nav-item nav-link"  routerLink="/" >Home</a>
+        <a class="nav-item nav-link" routerLink="/admin" routerLinkActive="active" *ngIf="isAdmin">Manager</a>
+        <a class="nav-item nav-link" routerLink="/employee" routerLinkActive="active" *ngIf="isAdmin">Worker</a>
+        <a class="nav-item nav-link" routerLink="/employee" routerLinkActive="active" *ngIf="isUser">Worker</a>
+        <a  [ngStyle]="{'padding-left': (isAdmin==true) ? '975px' : '1056px'}" 
+        class="nav-item nav-link " routerLinkActive="active" (click)="logout()" style="cursor: pointer;">Logout</a>
+    </div>
+</nav>
+
+<!-- main app container -->
+<div class="container">
+    <router-outlet></router-outlet>
+</div>
+<app-loader></app-loader>
