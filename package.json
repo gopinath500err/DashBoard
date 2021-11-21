@@ -1,6 +1,10 @@
 {
-  "name": "angular-role-based-authorization-example",
+  "name": "angular-role-based-dashBoardApp",
   "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gopinath500err/DashBoard/"
+},
   "scripts": {
     "ng": "ng",
     "start": "ng serve --open",

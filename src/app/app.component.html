@@ -5,8 +5,15 @@
         <a class="nav-item nav-link" routerLink="/admin" routerLinkActive="active" *ngIf="isAdmin">Manager</a>
         <a class="nav-item nav-link" routerLink="/employee" routerLinkActive="active" *ngIf="isAdmin">Worker</a>
         <a class="nav-item nav-link" routerLink="/employee" routerLinkActive="active" *ngIf="isUser">Worker</a>
-        <a  [ngStyle]="{'padding-left': (isAdmin==true) ? '975px' : '1056px'}" 
+        <a  [ngStyle]="{'padding-left': (isAdmin==true) ? '898px' : '980px'}" 
         class="nav-item nav-link " routerLinkActive="active" (click)="logout()" style="cursor: pointer;">Logout</a>
+
+        <mat-divider class="bg-light" [vertical]="true"></mat-divider>
+            <button class="userIcoBtn" type="button" mat-button>
+                <span class="mr-1 userProf">
+                    {{user?.firstName[0]}}{{user?.lastName[0]}}
+                </span>
+            </button>
     </div>
 </nav>
 

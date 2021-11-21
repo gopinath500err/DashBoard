@@ -1,11 +1,13 @@
-﻿<div class="col-12 p-0">
+<div class="col-12 p-0">
     <div class="container px-0">
-        <div *ngIf="dataSource && dataSource?.length <= 0" style="padding-top: 100px;padding-right: 50px;">
+        <div *ngIf="dataSource && dataSource?.length <= 0"
+            style="padding-top: 100px;padding-right: 50px;">
             <mat-card class="text-center col-5 mx-auto mt-3">
-                <h5 class="text-muted my-1">No Tasks</h5>
-                <button mat-raised-button color="primary" class="my-3" (click)="schdlKeyword = undefined;createTask()">
+                <h3 class="text-muted my-1">Tasks Yet To Be Create.. </h3>
+               <!--  <button mat-raised-button color="primary" class="my-3"
+                    (click)="schdlKeyword = undefined;createTask()">
                     <i class="ft-refresh-cw mr-1"></i>Create Task
-                </button>
+                </button> -->
             </mat-card>
         </div>
         <mat-card [hidden]="dataSource && dataSource?.length <= 0 || !dataSource">
@@ -20,14 +22,15 @@
                     </mat-form-field>
                 </div>
                 <div class="col-5 text-right" style="padding-right: 2px;">
-                    <button mat-raised-button color="basic" class="mb-0 mr-2"
+                    <button  mat-raised-button color="basic" class="mb-0 mr-2"
                         (click)="schdlKeyword = undefined;gettaskList();">
                         <i class="ft-refresh-cw mr-1"></i>Refresh
                     </button>
-                    <button mat-raised-button color="primary" class="mb-0" (click)="createTask()">
+                   <!--  <button mat-raised-button color="primary" class="mb-0"
+                        (click)="createTask()">
                         <i class="ft-refresh-cw mr-1"></i>Create Task
-                    </button>
-
+                    </button> -->
+                   
                 </div>
             </div>
             <div>
@@ -35,18 +38,16 @@
                     <table mat-table [dataSource]="filteredSource" class="col-12" matSort>
                         <ng-container matColumnDef="index">
                             <th mat-header-cell *matHeaderCellDef class="text-black-50 text-left" mat-sort-header> #
-                            </th>
+                                </th>
                             <td mat-cell *matCellDef="let element;let indx = index" class="text-left"> {{indx+1}} </td>
                         </ng-container>
                         <ng-container matColumnDef="taskId">
-                            <th mat-header-cell *matHeaderCellDef class="text-black-50 text-left" mat-sort-header>
-                                TaskId
-                            </th>
+                            <th mat-header-cell *matHeaderCellDef class="text-black-50 text-left" mat-sort-header> TaskId
+                                </th>
                             <td mat-cell *matCellDef="let element" class="text-left"> {{element?.taskId}} </td>
                         </ng-container>
                         <ng-container matColumnDef="taskName">
-                            <th mat-header-cell *matHeaderCellDef class="text-black-50 text-left" mat-sort-header>
-                                TaskName
+                            <th mat-header-cell *matHeaderCellDef class="text-black-50 text-left" mat-sort-header>TaskName
                             </th>
                             <td mat-cell *matCellDef="let element" class="text-left"> {{element?.taskName}} </td>
                         </ng-container>
@@ -55,14 +56,6 @@
                                 AssignTo
                             </th>
                             <td mat-cell *matCellDef="let element" class="text-left"> {{element?.assignTo}} </td>
-                        </ng-container>
-
-                        <ng-container matColumnDef="createdAt">
-                            <th mat-header-cell *matHeaderCellDef class="text-black-50 text-left" mat-sort-header>
-                                CreatedAt
-                            </th>
-                            <td mat-cell *matCellDef="let element" class="text-left"> {{element?.createdAt |
-                                date:'medium'}} </td>
                         </ng-container>
 
                         <ng-container matColumnDef="points">
@@ -74,32 +67,30 @@
 
                         <ng-container matColumnDef="status">
                             <th mat-header-cell *matHeaderCellDef class="text-black-50 text-center"
-                                style="padding-left: 10px;" mat-sort-header>
+                            style="padding-left: 10px;" mat-sort-header>
                                 Status
                             </th>
-                            <td mat-cell *matCellDef="let element" class="text-left">
+                            <td mat-cell *matCellDef="let element" class="text-left"> 
                                 <span *ngIf="element?.status === 'Assigned'"
-                                    class="py-1 px-2 rounded statusBadge inverse text-center text-bold-700">Assigned</span>
-                                <span *ngIf="element?.status === 'Pending'"
-                                    class="py-1 px-2 rounded statusBadge info text-center text-bold-700">Processing</span>
-                                <span *ngIf="element?.status === 'Resloved'"
-                                    class="py-1 px-2 rounded statusBadge success text-bold-700">Completed</span>
-
+                                class="py-1 px-2 rounded statusBadge inverse text-center text-bold-700">Assigned</span>
+                            <span *ngIf="element?.status === 'Pending'"
+                                class="py-1 px-2 rounded statusBadge info text-center text-bold-700">Processing</span>
+                            <span *ngIf="element?.status === 'Resloved'"
+                                class="py-1 px-2 rounded statusBadge success text-bold-700">Completed</span>
+                            
 
                             </td>
                         </ng-container>
 
-
-
+                       
+                       
                         <ng-container matColumnDef="actions">
                             <th mat-header-cell *matHeaderCellDef class="text-black-50 text-center">Actions</th>
                             <td mat-cell *matCellDef="let element" class="text-center">
                                 <span style="cursor: pointer;">
-                                    <!-- <mat-icon style="font-size: 20px;" class="text-muted mr-1" matTooltip="Info" (click)="details(element)">info</mat-icon> -->
-                                    <mat-icon style="font-size: 20px;" class="text-muted mr-1" matTooltip="Edit"
-                                        (click)="editTask(element)">edit</mat-icon>
-                                    <mat-icon style="font-size: 20px" class="text-muted accel-color-danger"
-                                        matTooltip="Delete" (click)="deleteTask(element)">delete</mat-icon>
+                                   
+                                    <mat-icon style="font-size: 20px;" class="text-muted mr-1" matTooltip="Edit" (click)="editTask(element)">edit</mat-icon>
+                                    <mat-icon style="font-size: 20px;" class="text-muted mr-1" matTooltip="Info" (click)="details(element)">info</mat-icon>
                                 </span>
                             </td>
                         </ng-container>
@@ -109,8 +100,7 @@
                     <div *ngIf="filteredSource && filteredSource.length <= 0;" class="w-100 py-3">
                         <h5 class="text-muted text-center">No Data found</h5>
                     </div>
-                    <mat-paginator [length]="dataSource?.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20, 40, 80]">
-                    </mat-paginator>
+                    <mat-paginator [length]="dataSource?.length" [pageSize]="5"  [pageSizeOptions]="[5, 10, 20, 40, 80]"></mat-paginator>
                 </div>
             </div>
         </mat-card>

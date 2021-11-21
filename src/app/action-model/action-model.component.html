@@ -1,8 +1,9 @@
 <div class="py-2" cdkDrag cdkDragRootElement='.cdk-overlay-pane'>
     <div class="row">
         <div class="col-11">
-            <h5 cdkDragHandle class="text-nowrap font-weight-bold" style=" font-size: 1.10rem;position: absolute;padding-left: 16px;">
-                {{headerName}}
+            <h5 cdkDragHandle class="text-nowrap font-weight-bold"
+                style=" font-size: 1.10rem;position: absolute;padding-left: 16px;">
+                {{headerName ==='Update Worker Task' ? 'Update Task' : headerName}}
             </h5>
         </div>
         <div class="col-1" style="padding-left: 16px;">
@@ -11,27 +12,47 @@
         </div>
     </div>
 
-    <div class="mt-2">
+    <div class="mt-2" *ngIf="headerName === 'Update Task' || headerName === 'Create Task'">
         <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
             <div class="row col-12 col-md-12 ">
                 <mat-form-field class="col-md-6" appearance="outline">
                     <mat-label>TaskId</mat-label>
-                    <input type="text" matInput name="taskId" formControlName="taskId"   placeholder="Enter taskId" required />
+                    <input type="text" matInput name="taskId" formControlName="taskId" placeholder="Enter taskId"
+                        required />
+                        <mat-error *ngIf="taskForm.controls['taskId'].errors?.pattern">
+                            TaskId sould be Numeric.
+                         </mat-error>
                 </mat-form-field>
                 <mat-form-field class="col-md-6" appearance="outline">
                     <mat-label>AssignTo</mat-label>
-                    <input type="text" matInput name="assignTo" formControlName="assignTo"   placeholder="AssignTo" required />
+                    <input type="text" matInput name="assignTo" formControlName="assignTo" placeholder="AssignTo"
+                        required />
+                        <mat-error *ngIf="taskForm.controls['assignTo'].errors?.pattern">
+                            enter valid name.
+                        </mat-error>
                 </mat-form-field>
                 <mat-form-field class="col-md-12" appearance="outline">
                     <mat-label>Task Name</mat-label>
-                    <input type="text" matInput name="taskName" formControlName="taskName"    placeholder="Enter Name" required />
+                    <input type="text" matInput name="taskName" formControlName="taskName" placeholder="Enter Name"
+                        required />
                 </mat-form-field>
-               
+
                 <mat-form-field class="col-md-6" appearance="outline">
                     <mat-label>Points</mat-label>
-                    <input type="text" matInput name="points" formControlName="points"   placeholder="Enter points" required />
+                    <input type="text" matInput name="points" formControlName="points"  placeholder="Enter points"
+                        required />
+                    <mat-error *ngIf="taskForm.controls['points'].errors?.pattern">
+                       Points sould be Numeric.
+                    </mat-error>
+                    <mat-error *ngIf="taskForm.controls['points'].errors?.min">
+                        Points sould not be lessthan 1.
+                     </mat-error>
+                     <mat-error *ngIf="taskForm.controls['points'].errors?.max">
+                        Points sould not be greaterthan 500.
+                     </mat-error>
+                   
                 </mat-form-field>
-               
+
                 <mat-form-field class="col-md-6" appearance="outline">
                     <mat-label>Select Status</mat-label>
                     <mat-select formControlName="status" name="status" required>
@@ -42,7 +63,8 @@
                 </mat-form-field>
             </div>
             <div class="col-12 text-right mt-3 pb-3">
-                <button style="width: 100px;" class="ml-2 mr-3" [disabled]="!taskForm.valid"  mat-raised-button color="primary" type="submit">
+                <button style="width: 100px;" class="ml-2 mr-3" [disabled]="!taskForm.valid" mat-raised-button
+                    color="primary" type="submit">
                     {{headerName ==='Update Task' ? 'Update' : 'Save'}}
                 </button>
 
@@ -50,5 +72,56 @@
                     (click)="taskForm.reset();">Clear</button>
             </div>
         </form>
+    </div>
+
+    <div class="mt-3" *ngIf="headerName === 'Update Worker Task'">
+        <form [formGroup]="workerForm" (ngSubmit)="onSubmitWorker()">
+            <div class="row col-12 col-md-12 ">
+                <mat-form-field class="col-md-8" appearance="outline">
+                    <mat-label>Update Status</mat-label>
+                    <mat-select formControlName="status" name="status" required>
+                        <mat-option *ngFor="let status of statusData" [value]="status">
+                            {{status}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="col-12 text-right mt-3 pb-3">
+                <button style="width: 100px;" class="ml-2 mr-3" [disabled]="!workerForm.valid" mat-raised-button
+                    color="primary" type="submit">
+                    {{headerName ==='Update Worker Task' ? 'Update' : 'Save'}}
+                </button>
+
+            </div>
+        </form>
+    </div>
+    <div class="mt-3" *ngIf="headerName === 'Task Details'">
+        <div class="col-12" *ngFor="let task of taskDetails" style="padding-left: 17px;padding-top:10px ">
+            <div>
+                <span class="font-weight-bold">TaskId:</span>
+                <span style="padding-left: 5px;">{{task.taskId}}</span>
+            </div>
+            <div class="mt-2">
+                <span class="font-weight-bold">TaskName:</span>
+                <span style="padding-left: 5px;">{{task.taskName}}</span>
+            </div>
+            <div class="mt-2">
+                <span class="font-weight-bold">Status:</span>
+                <span style="padding-left: 5px;">{{task.status}}</span>
+            </div>
+            <div class="mt-2">
+                <span class="font-weight-bold">AssignTo:</span>
+                <span style="padding-left: 5px;">{{task.assignTo}}</span>
+            </div>
+            <div class="mt-2">
+                <span class="font-weight-bold">Created At:</span>
+                <span style="padding-left: 5px;">{{task.createdAt | date:'medium'}}</span>
+            </div>
+            <div class="mt-2">
+                <span class="font-weight-bold">Updated At:</span>
+                <span style="padding-left: 5px;">{{task.updatedAt | date:'medium'}}</span>
+            </div>
+            
+        </div>
     </div>
 </div>

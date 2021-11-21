@@ -11,30 +11,31 @@ import { ActionModelComponent } from '@app/action-model/action-model.component';
 import { ApiService } from '@app/_services/apiservice.service';
 import { ToastrService } from '@app/_services/toastr.service';
 import { ConfirmationComponent } from '@app/confirmation/confirmation.component';
-@Component({ templateUrl: 'admin.component.html',
-styleUrls: ['./admin.component.scss']
+
+@Component({
+  templateUrl: 'admin.component.html',
+  styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-  displayedColumns: string[] = ['index', 'taskId', 'taskName', 'assignTo', 'points', 'status', 'actions'];
+  displayedColumns: string[] = ['index', 'taskId', 'taskName', 'assignTo', 'createdAt', 'points', 'status', 'actions'];
   dataSource: any;
   filteredSource: any;
   dialogConfig: MatDialogConfig;
   schdlKeyword: any = undefined;
   loading = false;
   users: User[] = [];
-  
+
   constructor(private userService: UserService, private dialog: MatDialog,
     private api: ApiService, private toast: ToastrService) {
-   
+
     this.filteredSource = new MatTableDataSource(this.dataSource);
     this.filteredSource.sort = this.sort;
     this.filteredSource.paginator = this.paginator;
   }
 
   ngOnInit() {
-    //this.dataSource = [];
     this.loading = true;
     this.userService.getAll().pipe(first()).subscribe(users => {
       this.loading = false;
@@ -43,23 +44,29 @@ export class AdminComponent implements OnInit {
     this.gettaskList();
   }
 
+  /* Task List */
+
   gettaskList() {
     this.api.httpGet('/getTaskList')
-    .subscribe((res: any) => {
-    if (res.err === null && res.data) {
-      this.dataSource = res.data;
-      this.filteredSource = new MatTableDataSource(this.dataSource);
-      this.filteredSource.sort = this.sort;
-      this.filteredSource.paginator = this.paginator;
-     } else {
-    console.log(res.err);
-    }
-    });
+      .subscribe((res: any) => {
+        if (res.err === null && res.data) {
+          this.dataSource = res.data;
+          this.filteredSource = new MatTableDataSource(this.dataSource);
+          this.filteredSource.sort = this.sort;
+          this.filteredSource.paginator = this.paginator;
+        } else {
+          console.log(res.err);
+        }
+      });
   }
-  // Filter User name
+
+  // Filter by dataSource data
+
   applyFilter(filterValue: any) {
     this.filteredSource.filter = filterValue.trim().toLowerCase();
   }
+
+  /* Create Task */
 
   createTask() {
     this.dialogConfig = new MatDialogConfig();
@@ -76,18 +83,20 @@ export class AdminComponent implements OnInit {
       }
     });
     dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) { 
+      if (result !== undefined) {
         this.api.httpPost('/createTask', result)
-        .subscribe(
-          response => {
-            if (response.data !== undefined) {
-              this.toast.open('success', 'SUCCESS', 'created successfully');
-              this.gettaskList();
-            }
-          });
+          .subscribe(
+            response => {
+              if (response.data !== undefined) {
+                this.toast.open('success', 'SUCCESS', 'created successfully');
+                this.gettaskList();
+              }
+            });
       }
     })
   }
+
+  /* Update Task */
 
   editTask(ele) {
     this.dialogConfig = new MatDialogConfig();
@@ -104,22 +113,24 @@ export class AdminComponent implements OnInit {
       }
     });
     dialogRef.afterClosed().subscribe(result => {
-      if (result !== undefined) { 
-            result._id = ele._id;
+      if (result !== undefined) {
+        result._id = ele._id;
         this.api.httpPost('/updateTask', result)
-        .subscribe(
-          response => {
-            if (response.data !== undefined) {
-              this.toast.open('success', 'SUCCESS', 'updated successfully');
-              this.gettaskList();
-            }
-          });
+          .subscribe(
+            response => {
+              if (response.data !== undefined) {
+                this.toast.open('success', 'SUCCESS', 'updated successfully');
+                this.gettaskList();
+              }
+            });
 
       }
     })
   }
-  deleteTask(ele) {
 
+  /* Delete Task */
+
+  deleteTask(ele) {
     this.dialogConfig = new MatDialogConfig();
     this.dialogConfig.disableClose = true;
     this.dialogConfig.autoFocus = true;
@@ -130,28 +141,25 @@ export class AdminComponent implements OnInit {
       width: '500px',
       panelClass: ['overflow-auto'],
       data: {
-        headerName: 'Delete Task', "taskId":ele.taskId
+        headerName: 'Delete Task', "taskId": ele.taskId
       }
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
-      if (result === true) { 
-        let id = {_Id: ele._id};
+      if (result === true) {
+        let id = { _Id: ele._id };
         this.api.httpPost('/remove', id)
-        .subscribe(
-          response => {
-            if (response.data !== undefined) {
-              this.toast.open('success', 'SUCCESS', 'Deleted successfully');
-              this.gettaskList();
-            }
-          });
+          .subscribe(
+            response => {
+              if (response.data !== undefined) {
+                this.toast.open('success', 'SUCCESS', 'Deleted successfully');
+                this.gettaskList();
+              }
+            });
 
       }
     })
 
-      
-  }
-  details(ele) {
 
   }
+
 }

@@ -23,14 +23,13 @@ export class ApiService {
                 return resData;
             }),
             catchError((err: any) => {
-                // console.log(err.error.err);
-                if (err.error.err !== ''){
-                    this.toastr.open('error', `ERROR-${err.status}`, err.error.err);
-                }else{
-                    this.toastr.open('error', `ERROR-${err.status}`, err.statusText);
-                }
-
+                if (err === 'Conflict'){
+                this.toastr.open('warning', `WARNING-409`, err);
                 return throwError(err);
+                }else{
+                this.toastr.open('error', `ERROR-${err.status}`, err.statusText);
+                return throwError(err);
+                }
             })
             );
         }
